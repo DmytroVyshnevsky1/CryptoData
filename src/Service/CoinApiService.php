@@ -32,41 +32,20 @@ class CoinApiService
         $this->logger = $logger;
     }
 
-    public function getExchangeRate(ExchangeRateRequestDto $requestDto) : string
+    public function getExchangeRate(ExchangeRateRequestDto $dto) : string
     {
-        $cacheKey = "exchange_rate_{$requestDto->base->value}_{$requestDto->quote->value}_{$requestDto->periodId->value}";
+        $url = "v1/exchangerate/{$dto->base->value}/{$dto->quote->value}/history";
+        $query = [
+            'period_id' => $dto->periodId->value,
+            'time_start' => $dto->timeStart,
+            'time_end' => $dto->timeEnd,
+            'limit' => $dto->limit,
+        ];
 
-        $cacheItem = $this->cache->getItem($cacheKey);
+        $response = $this->client->request('GET', $url, ['query' => $query]);
 
-        if ($cacheItem->isHit())
-        {
-            return $cacheItem->get();
-        }
-        else
-        {
-            $url = "v1/exchangerate/{$requestDto->base->value}/{$requestDto->quote->value}/history";
-            var_dump($url);
-            $query = [
-                'period_id' => $requestDto->periodId->value,
-                'time_start' => $requestDto->timeStart,
-                'time_end' => $requestDto->timeEnd,
-                'limit' => $requestDto->limit,
-            ];
+        $responseData = $response->getContent();
 
-            $response = $this->client->request('GET', $url, ['query' => $query]);
-
-            $responseData = $response->getContent();
-
-            $this->setCachedData($cacheItem, $responseData);
-
-            return $responseData;
-        }
-    }
-
-    private  function  setCachedData(CacheItem $cacheItem, string $data) : void
-    {
-        $cacheItem->set($data);
-        $cacheItem->expiresAfter(self::CACHE_TTL);
-        $this->cache->save($cacheItem);
+        return $responseData;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Action\ExchangeRateAction;
 use App\Dto\ExchangeRateRequestDto;
 use App\Service\CoinApiService;
 use Exception;
@@ -17,13 +18,11 @@ class RatesController extends  AbstractController
     #[Route('', name: 'rates_get', methods: ['GET'])]
     public  function  index(
             #[MapQueryString]ExchangeRateRequestDto $requestDto,
-            CoinApiService $coinApiService
+            ExchangeRateAction $exchangeRateAction
         ) : Response
     {
 
-        $response = $coinApiService->getExchangerate($requestDto);
+        $response = $exchangeRateAction->handle($requestDto);
         return new Response($response, Response::HTTP_OK);
-
-
     }
 }
