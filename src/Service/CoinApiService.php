@@ -3,15 +3,8 @@
 namespace App\Service;
 
 use App\Dto\ExchangeRateRequestDto;
-use App\Enum\CurrencyEnum;
-use App\Exception\CoinServiceException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\CacheItem;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -41,8 +34,7 @@ class CoinApiService
 
     public function getExchangeRate(ExchangeRateRequestDto $requestDto) : string
     {
-
-        $cacheKey = 'exchange_rate_' . $requestDto->base->value . '_' . $requestDto->quote->value;
+        $cacheKey = "exchange_rate_{$requestDto->base->value}_{$requestDto->quote->value}_{$requestDto->periodId->value}";
 
         $cacheItem = $this->cache->getItem($cacheKey);
 
@@ -69,7 +61,6 @@ class CoinApiService
 
             return $responseData;
         }
-
     }
 
     private  function  setCachedData(CacheItem $cacheItem, string $data) : void
