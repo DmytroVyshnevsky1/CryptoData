@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Dto\ExchangeRateRequestDto;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -14,8 +13,6 @@ class CoinApiService
     private const CACHE_TTL = 2;
 
     private HttpClientInterface $client;
-    private CacheInterface $cache;
-    private LoggerInterface $logger;
 
     public function __construct(HttpClientInterface $client, CacheInterface $cache, LoggerInterface $logger)
     {
