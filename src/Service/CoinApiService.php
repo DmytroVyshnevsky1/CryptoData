@@ -3,9 +3,7 @@
 namespace App\Service;
 
 use App\Dto\ExchangeRateRequestDto;
-use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 
 class CoinApiService
 {
@@ -14,7 +12,7 @@ class CoinApiService
 
     private HttpClientInterface $client;
 
-    public function __construct(HttpClientInterface $client, CacheInterface $cache, LoggerInterface $logger)
+    public function __construct(HttpClientInterface $client)
     {
         $headers = [
             'Accept' => 'text/plain',
@@ -24,9 +22,6 @@ class CoinApiService
             'base_uri' => self::BASE_URL,
             'headers' => $headers
         ]);
-
-        $this->cache = $cache;
-        $this->logger = $logger;
     }
 
     public function getExchangeRate(ExchangeRateRequestDto $dto) : string

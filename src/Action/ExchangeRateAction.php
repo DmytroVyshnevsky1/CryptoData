@@ -11,14 +11,13 @@ class ExchangeRateAction
 {
     public function __construct(
         private CoinApiService $coinApiService,
-        private CacheInterface $cache,
-        private LoggerInterface $logger
+        private CacheInterface $cache
     ) {
     }
 
     public function handle(ExchangeRateRequestDto $dto) : string
     {
-        $cacheKey = "exchange_rate_{$dto->base->value}_{$dto->quote->value}_{$dto->periodId->value}";
+        $cacheKey = "exchange_rate_{$dto->base->value}_{$dto->quote->value}_{$dto->periodId->value}_{$dto->limit}";
 
         $cacheItem = $this->cache->getItem($cacheKey);
 
