@@ -17,7 +17,7 @@ class ExchangeRateAction
 
     public function handle(ExchangeRateRequestDto $dto) : string
     {
-        $cacheKey = "exchange_rate_{$dto->base->value}_{$dto->quote->value}_{$dto->periodId->value}_{$dto->limit}";
+        $cacheKey = "exchange_rate_{$dto->base->value}_{$dto->quote->value}_{$dto->periodId->value}_$dto->limit";
 
         $cacheItem = $this->cache->getItem($cacheKey);
 

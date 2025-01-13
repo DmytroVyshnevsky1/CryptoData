@@ -8,7 +8,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class CoinApiService
 {
     private const BASE_URL = 'https://rest.coinapi.io/';
-    private const CACHE_TTL = 2;
 
     private HttpClientInterface $client;
 
@@ -36,8 +35,6 @@ class CoinApiService
 
         $response = $this->client->request('GET', $url, ['query' => $query]);
 
-        $responseData = $response->getContent();
-
-        return $responseData;
+        return $response->getContent();
     }
 }
