@@ -30,5 +30,13 @@ services:
     volumes:
       - redis_data:/data
 
+  react_client:
+    build:
+      context: https://github.com/TRPZtest/crypto-client.git
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_COIN_API_URL=http://symfony_web:80
+
 volumes:
   redis_data:
