@@ -6,6 +6,7 @@ DOCKER_CONSOLE = $(DOCKER_EXEC) $(CONSOLE)
 # Docker Compose
 up:
 	docker compose up -d --build --remove-orphans
+	$(MAKE) composer-install
 
 down:
 	docker compose down
