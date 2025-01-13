@@ -4,10 +4,9 @@ namespace App\Action;
 
 use App\Dto\ExchangeRateRequestDto;
 use App\Service\CoinApiService;
-use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class ExchangeRateAction
+readonly class ExchangeRateAction
 {
     public function __construct(
         private CoinApiService $coinApiService,
